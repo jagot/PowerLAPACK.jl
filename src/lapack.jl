@@ -181,7 +181,9 @@ for (stev, stebz, stegr, stein, elty) in
             abstol, m, w, Z, isuppz, work, lwork, iwork, liwork, info
         end
 
-        function stegr!(jobz::Char, range::Char, dv::Vector{$elty}, eev::Vector{$elty}, vl::Real, vu::Real, il::Integer, iu::Integer,
+        function stegr!(jobz::Char, range::Char,
+                        dv::AbstractVector{$elty}, eev::AbstractVector{$elty},
+                        vl::Real, vu::Real, il::Integer, iu::Integer,
                         abstol::Array{$elty}, m::Array{BlasInt}, w::Vector{$elty}, Z::StridedMatrix{$elty},
                         isuppz::Vector{BlasInt},
                         work::Array{$elty}, lwork::BlasInt,

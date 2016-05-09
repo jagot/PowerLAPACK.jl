@@ -61,7 +61,10 @@ function test_stev_subspace(N,M)
     ee = Base.Eigen(Base.LAPACK.stev!('V', T.dv, T.ev)...)
 
     Zmat,work,info = lap.stev_work('V', dv, ev)
-    lap.stev!('V', sub(dv, 1:M), ev, sub(Zmat, 1:M, 1:M), work, info)
+    @time lap.stev!('V', sub(dv, 1:M), sub(ev, 1:M), sub(Zmat, 1:M, 1:M), work, info)
+    dv = -2ones(N)
+    ev = ones(N-1)
+    @time lap.stev!('V', sub(dv, 1:M), sub(ev, 1:M), sub(Zmat, 1:M, 1:M), work, info)
 
     @test sumabs2(ee[:values]-dv[1:M]) == 0
     @test sumabs2(ee[:vectors]-Zmat[1:M,1:M]) == 0

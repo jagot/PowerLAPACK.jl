@@ -62,8 +62,12 @@ function test_stegr_subspace(N,M)
     ee = eigfact(T)
 
     abstol,m,w,Z,isuppz,work,lwork,iwork,liwork,info = lap.stegr_work('V', 'A', dv, eev, 0.0, 0.0, 0, 0)
-    lap.stegr!('V', 'A', dv[1:M], eev[1:M], 0.0, 0.0, 0, 0, abstol,m,
-               w,sub(Z, 1:M, 1:M),isuppz,work,lwork,iwork,liwork,info)
+    @time lap.stegr!('V', 'A', sub(dv, 1:M), sub(eev, 1:M), 0.0, 0.0, 0, 0, abstol,m,
+                     w,sub(Z, 1:M, 1:M),isuppz,work,lwork,iwork,liwork,info)
+    dv = -2ones(N)
+    eev = [ev; zero(eltype(ev))]
+    @time lap.stegr!('V', 'A', sub(dv, 1:M), sub(eev, 1:M), 0.0, 0.0, 0, 0, abstol,m,
+                     w,sub(Z, 1:M, 1:M),isuppz,work,lwork,iwork,liwork,info)
 
     @test sumabs2(ee[:values]-w[1:M]) == 0
     @test sumabs2(ee[:vectors]-Z[1:M,1:M]) == 0
