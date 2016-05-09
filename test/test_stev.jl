@@ -23,7 +23,7 @@ function test_stev(N::Integer, nt::Integer)
     @time highlevel(nt)
 
     println("stev! w/ prealloc'd work, passed as splat array:")
-    s_work = lap.stev_work('V', dv, ev)
+    s_work = lap.stev!('V', dv, ev, true)
     function lowlevel_compound(nn)
         for i = 1:nn
             dv_w[:] = dv
@@ -37,7 +37,7 @@ function test_stev(N::Integer, nt::Integer)
     @test sumabs2(ee[:vectors]-s_work[1]) == 0
 
     println("stev! w/ prealloc'd work, passed separately:")
-    Zmat,work,info = lap.stev_work('V', dv, ev)
+    Zmat,work,info = lap.stev!('V', dv, ev, true)
     function lowlevel_separate(nn)
         for i = 1:nn
             dv_w[:] = dv
@@ -60,7 +60,7 @@ function test_stev_subspace(N,M)
     T = SymTridiagonal(copy(dv[1:M]), copy(ev[1:M-1]))
     ee = Base.Eigen(Base.LAPACK.stev!('V', T.dv, T.ev)...)
 
-    Zmat,work,info = lap.stev_work('V', dv, ev)
+    Zmat,work,info = lap.stev!('V', dv, ev, true)
     @time lap.stev!('V', sub(dv, 1:M), sub(ev, 1:M), sub(Zmat, 1:M, 1:M), work, info)
     dv = -2ones(N)
     ev = ones(N-1)
@@ -70,7 +70,7 @@ function test_stev_subspace(N,M)
     @test sumabs2(ee[:vectors]-Zmat[1:M,1:M]) == 0
 end
 
-test_stev(1000,10)
+test_stev(500,10)
 test_stev_subspace(20,10)
 
 println()
