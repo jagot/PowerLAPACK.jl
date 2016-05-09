@@ -1,5 +1,5 @@
 module PowerLAPACK
 
-# package code goes here
+include("lapack.jl")
 
 end # module

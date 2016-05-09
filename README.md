@@ -4,6 +4,17 @@
 
 Package used for development towards implementing JuliaLang/julia#16263.
 
+[Example](/test/test_stegr.jl) for eigendecomposition of symmetric tridiagonal matrix:
+```
+2000×2000 symmetric tridiagonal matrix, 100 iterations
+eigfact:
+ 27.124645 seconds (5.00 k allocations: 6.013 GB, 6.93% gc time)
+stegr! w/ prealloc'd work, passed as splat array:
+ 24.967008 seconds (700 allocations: 15.625 KB)
+stegr! w/ prealloc'd work, passed separately:
+ 24.683399 seconds
+```
+
 Pull requests welcome!
 
 Routines that need splitting into allocation + execution = driver (those that appear more than once have more than one implementation):
@@ -65,7 +76,7 @@ Routines that need splitting into allocation + execution = driver (those that ap
 - [ ] `trrfs!`
 - [ ] `stev!`
 - [ ] `stebz!`
-- [ ] `stegr!`
+- [x] `stegr!`
 - [ ] `stein!`
 - [ ] `syconv!`
 - [ ] `sysv!`
