@@ -23,7 +23,7 @@ function test_stegr(N::Integer, nt::Integer)
     @time highlevel(nt)
 
     println("stegr! w/ prealloc'd work, passed as splat array:")
-    s_work = lap.stegr_work('V', 'A', dv, eev, 0.0, 0.0, 0, 0)
+    s_work = lap.stegr!('V', 'A', dv, ev, 0.0, 0.0, 0, 0, true)
     function lowlevel_compound(nn)
         for i = 1:nn
             dv_w[:] = dv
@@ -37,7 +37,7 @@ function test_stegr(N::Integer, nt::Integer)
     @test sumabs2(ee[:vectors]-s_work[4]) == 0
 
     println("stegr! w/ prealloc'd work, passed separately:")
-    abstol,m,w,Z,isuppz,work,lwork,iwork,liwork,info = lap.stegr_work('V', 'A', dv, eev, 0.0, 0.0, 0, 0)
+    abstol,m,w,Z,isuppz,work,lwork,iwork,liwork,info = lap.stegr!('V', 'A', dv, ev, 0.0, 0.0, 0, 0, true)
     function lowlevel_separate(nn)
         for i = 1:nn
             dv_w[:] = dv
@@ -61,7 +61,7 @@ function test_stegr_subspace(N,M)
     T = SymTridiagonal(copy(dv[1:M]), copy(ev[1:M-1]))
     ee = eigfact(T)
 
-    abstol,m,w,Z,isuppz,work,lwork,iwork,liwork,info = lap.stegr_work('V', 'A', dv, eev, 0.0, 0.0, 0, 0)
+    abstol,m,w,Z,isuppz,work,lwork,iwork,liwork,info = lap.stegr!('V', 'A', dv, ev, 0.0, 0.0, 0, 0, true)
     @time lap.stegr!('V', 'A', sub(dv, 1:M), sub(eev, 1:M), 0.0, 0.0, 0, 0, abstol,m,
                      w,sub(Z, 1:M, 1:M),isuppz,work,lwork,iwork,liwork,info)
     dv = -2ones(N)
@@ -73,7 +73,7 @@ function test_stegr_subspace(N,M)
     @test sumabs2(ee[:vectors]-Z[1:M,1:M]) == 0
 end
 
-test_stegr(2000,100)
+test_stegr(500,100)
 test_stegr_subspace(20,10)
 
 println()
