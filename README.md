@@ -74,7 +74,7 @@ Routines that need splitting into allocation + execution = driver (those that ap
 - [ ] `trcon!`
 - [ ] `trevc!`
 - [ ] `trrfs!`
-- [ ] `stev!`
+- [x] `stev!`
 - [ ] `stebz!`
 - [x] `stegr!`
 - [ ] `stein!`

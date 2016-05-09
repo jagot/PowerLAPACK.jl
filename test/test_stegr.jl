@@ -1,5 +1,7 @@
 lap = PowerLAPACK.LAPACK
 
+println("Test stegr!")
+
 function test_stegr(N::Integer, nt::Integer)
     dv = -2ones(N)
     ev = ones(N-1)
@@ -69,3 +71,5 @@ end
 
 test_stegr(2000,100)
 test_stegr_subspace(20,10)
+
+println()
